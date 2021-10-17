@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] Player playerScript;
+    [SerializeField] internal bool isDead = false;
 
     private Rigidbody2D rb;
 
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.CompareTag("Props"))
         {
+            isDead = true;
             playerScript.playerUIScript.GameOver();
         }
     }

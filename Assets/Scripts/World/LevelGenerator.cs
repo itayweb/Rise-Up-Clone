@@ -5,11 +5,15 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     [SerializeField] GameObject[] levelsTemplates;
+    [SerializeField] Color[] backgroundColors;
     [SerializeField] GameObject player;
     [SerializeField] internal bool canGenerate = false;
+    [SerializeField] Camera playerCamera;
 
     private int rndLevelSelector;
-    private GameObject level;
+    private int rndBackgroundColorNum;
+    private Color rndBackgroundColor;
+    private GameObject level;    
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +40,9 @@ public class LevelGenerator : MonoBehaviour
             level = Instantiate(levelsTemplates[rndLevelSelector]) as GameObject;
             Vector2 newLevel = new Vector2(player.transform.position.x, player.transform.position.y + 5);
             level.transform.position = newLevel;
+            rndBackgroundColorNum = Random.Range(0, backgroundColors.Length);
+            rndBackgroundColor = backgroundColors[rndBackgroundColorNum];
+            playerCamera.backgroundColor = rndBackgroundColor;
             canGenerate = false;
         }
     }
