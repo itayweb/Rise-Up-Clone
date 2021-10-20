@@ -6,7 +6,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] internal PlayerMovement playerMovementScript;
     [SerializeField] internal LevelGenerator levelGeneratorScript;
-    [SerializeField] internal PlayerUI playerUIScript;
+    [SerializeField] internal GameUI gameUIScript;
+    [SerializeField] internal Score scoreScript;
 
     // Start is called before the first frame update
     void Start()

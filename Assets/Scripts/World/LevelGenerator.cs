@@ -29,7 +29,6 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateLevels()
     {
-        
         if (canGenerate)
         {
             if (level.transform.position.y < player.transform.position.y)

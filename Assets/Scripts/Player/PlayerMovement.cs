@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.CompareTag("Props"))
         {
             isDead = true;
-            playerScript.playerUIScript.GameOver();
+            playerScript.gameUIScript.RestartGame();
         }
     }
 }
