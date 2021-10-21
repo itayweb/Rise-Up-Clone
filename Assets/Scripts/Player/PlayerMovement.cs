@@ -42,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
         if (collision.CompareTag("Props"))
         {
             isDead = true;
+            PlayerData pd = new PlayerData();
+            pd.highestScore = playerScript.scoreScript.GetHighestScore();
+            pd.coins += playerScript.scoreScript.coins + (pd.highestScore / 2);
+            playerScript.saveSystemScript.SaveData(pd);
             playerScript.gameUIScript.RestartGame();
         }
     }

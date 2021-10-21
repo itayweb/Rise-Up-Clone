@@ -2,18 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.IO;
 
 public class GameUI : MonoBehaviour
 {
     [SerializeField] GameObject mainMenuPanel;
     [SerializeField] GameObject scoreLabelTxt;
     [SerializeField] GameObject scoreTxt;
+    [SerializeField] Text highestScoreTxt;
+    [SerializeField] Text coins;
     [SerializeField] SpriteRenderer player;
     [SerializeField] Player playerScript;
 
     // Start is called before the first frame update
     void Start()
     {
+        PlayerData pd = new PlayerData();
+        if (File.Exists(Application.dataPath + "/PlayerData/SaveData.dat"))
+        {
+            pd = playerScript.saveSystemScript.LoadData();
+            highestScoreTxt.text = pd.highestScore.ToString();
+            coins.text = pd.coins.ToString();
+        }
+        else
+        {
+            highestScoreTxt.text = "0";
+            coins.text = "0";
+        }
         Time.timeScale = 0;
     }
 

@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 8539566}
   - component: {fileID: 8539565}
   - component: {fileID: 8539564}
+  - component: {fileID: 8539567}
+  - component: {fileID: 8539568}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -182,6 +184,7 @@ MonoBehaviour:
   mainMenuPanel: {fileID: 125562251}
   scoreLabelTxt: {fileID: 740643941}
   scoreTxt: {fileID: 882980138}
+  highestScoreTxt: {fileID: 1783041910}
   player: {fileID: 2136015291}
   playerScript: {fileID: 2136015289}
 --- !u!4 &8539566
@@ -198,6 +201,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8539567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5edf5211b00910f4cab0ab38f7b99b3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8539568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb02ab2efffc1a45a768544f077a180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerScript: {fileID: 2136015289}
 --- !u!1 &116307248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,7 +1288,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 
 --- !u!222 &1783041911
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1592,6 +1620,7 @@ MonoBehaviour:
   levelGeneratorScript: {fileID: 8539564}
   gameUIScript: {fileID: 8539565}
   scoreScript: {fileID: 2136015296}
+  saveSystemScript: {fileID: 8539568}
 --- !u!50 &2136015290
 Rigidbody2D:
   serializedVersion: 4
@@ -1754,6 +1783,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  coins: 0
   playerScript: {fileID: 2136015289}
   scoreTxt: {fileID: 882980140}
   startCounting: 0
+  highestScore: 0

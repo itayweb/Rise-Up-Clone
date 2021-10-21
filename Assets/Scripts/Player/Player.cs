@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] internal LevelGenerator levelGeneratorScript;
     [SerializeField] internal GameUI gameUIScript;
     [SerializeField] internal Score scoreScript;
+    [SerializeField] internal SaveSystem saveSystemScript;
 
     // Start is called before the first frame update
     void Start()

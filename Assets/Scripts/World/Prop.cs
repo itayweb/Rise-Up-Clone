@@ -24,7 +24,5 @@ public class Prop : MonoBehaviour
         {
             rb.constraints = RigidbodyConstraints2D.None;
         }
-
-        //if (collision.gameObject.CompareTag("Border"))
     }
 }
