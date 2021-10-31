@@ -56,7 +56,7 @@ public class SaveSystem : MonoBehaviour
         path = Application.persistentDataPath + "/PlayerData/SaveData.dat";
 #endif*/
 #if UNITY_EDITOR
-        print("Unity on Desktop or Editor on SaveData Func");
+        print("Unity on Editor on SaveData Func");
         path = Application.dataPath + "/PlayerData/SaveData.dat";
 #endif
         File.WriteAllText(path, json);
@@ -70,7 +70,7 @@ public class SaveSystem : MonoBehaviour
         json = File.ReadAllText(Application.persistentDataPath + "/PlayerData/SaveData.dat");
 #endif*/
 #if UNITY_EDITOR
-        print("Unity on Desktop or Editor on LoadData Func");
+        print("Unity on Editor on LoadData Func");
         json = File.ReadAllText(Application.dataPath + "/PlayerData/SaveData.dat");
 #endif
         PlayerData loadedData = JsonUtility.FromJson<PlayerData>(json);        
