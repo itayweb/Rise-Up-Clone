@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e771c7089f015a43b4ab8a254046945, type: 3}
+  m_Name: PinkBalloon
+  m_EditorClassIdentifier: 
+  name: PinkBalloon
+  sprite: {fileID: 21300000, guid: 9bf51dc30af3c0141b4c29fba7c73bfe, type: 3}
