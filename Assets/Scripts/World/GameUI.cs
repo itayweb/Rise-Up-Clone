@@ -18,26 +18,27 @@ public class GameUI : MonoBehaviour
     [SerializeField] private Text highestScoreTxt;
     [SerializeField] private Text coinsMainMenuTxt;
     [SerializeField] private Text coinsShopTxt;
+    [SerializeField] private Text coinsItemsTxt;
     [SerializeField] private SpriteRenderer playerRenderer;
-    [SerializeField] private Player playerScript;
     [SerializeField] private Transform itemsContainer;
     [SerializeField] private List<GameObject> itemsList = new List<GameObject>();
     [SerializeField] private GameObject itemsAcquiredContainer;
-    [SerializeField] private List<Sprite> playerSprites = new List<Sprite>();
-
+    
+    [SerializeField] internal GameManager gameManagerScript;
+    
     private Button btn;
-    private PlayerData pd = new PlayerData();
+    internal PlayerData pd = new PlayerData();
     private PurchasableItemHolder purchasableItemHolderScript;
 
     // Start is called before the first frame update
     private void Start()
     {
-        CheckCoinsStatus(coinsMainMenuTxt);
+        //gameManagerScript = GetComponent<GameManager>();
         Time.timeScale = 0;
         FetchData();
+        CheckCoinsStatus(coinsMainMenuTxt);
         UpdateShopButtons();
         UpdateAcquiredButtons();
-        //AssignButtons();
     }
 
     // Update is called once per frame
@@ -45,45 +46,27 @@ public class GameUI : MonoBehaviour
     {
         
     }
-    
-    private void AssignButtons()
-    {
-        Button[] btns = itemsContainer.GetComponentsInChildren<Button>();
-        for (int i = 0; i < btns.Length; i++)
-        {
-            print("found");
-            btns[i].onClick.AddListener((UnityEngine.Events.UnityAction)SelectPlayerSprite);
-        }
-    }
 
     private void UpdateAcquiredButtons() // Updating the acquired items in the items panel to be visible
     {
-        if (playerScript.saveSystemScript.IsSaveFileExist())
+        var itemsAcquiredList = pd.itemsAcquired;
+        if (itemsAcquiredList.Any())
         {
-            pd = playerScript.saveSystemScript.LoadData();
-            var itemsAcquiredList = pd.itemsAcquired;
-            if (itemsAcquiredList.Any())
+            for (int i = 0; i < itemsAcquiredList.Count; i++)
             {
-                for (int i = 0; i < itemsAcquiredList.Count; i++)
+                for (int j = 0; j < itemsList.Count; j++)
                 {
-                    for (int j = 0; j < itemsList.Count; j++)
+                    string btnName = itemsList[j].GetComponent<AcquiredItemHolder>().GetAcquiredItem().GetName();
+                    if (itemsAcquiredList[i].Contains(btnName))
                     {
-                        string btnName = itemsList[j].GetComponent<AcquiredItemHolder>().GetAcquiredItem().GetName();
-                        if (itemsAcquiredList[i].Contains(btnName))
-                        {
-                            Instantiate(itemsList[j], itemsAcquiredContainer.transform, false).GetComponent<Button>();
-                        }
+                        Instantiate(itemsList[j], itemsAcquiredContainer.transform, false).GetComponent<Button>();
                     }
                 }
-            }
-            else
-            {
-                print("No items has acquired!");
             }
         }
         else
         {
-            print("No save file has found!");
+            print("No items has acquired!");
         }
     }
 
@@ -104,17 +87,20 @@ public class GameUI : MonoBehaviour
 
     private void FetchData() // Fetching player data from player's local save file
     {
-        if (playerScript.saveSystemScript.IsSaveFileExist())
+        if (gameManagerScript.saveSystemScript.IsSaveFileExist())
         {
-            pd = playerScript.saveSystemScript.LoadData();
+            pd = gameManagerScript.saveSystemScript.LoadData();
+        }
+        else
+        {
+            print("No save file has found!");
         }
     }
 
     private void CheckCoinsStatus(Text coins) // Updating player's coins stats
     {
-        if (playerScript.saveSystemScript.IsSaveFileExist())
+        if (gameManagerScript.saveSystemScript.IsSaveFileExist())
         {
-            pd = playerScript.saveSystemScript.LoadData();
             highestScoreTxt.text = pd.highestScore.ToString();
             coins.text = pd.coins.ToString();
         }
@@ -129,7 +115,7 @@ public class GameUI : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
         playerRenderer.color = new Color(playerRenderer.color.r, playerRenderer.color.g, playerRenderer.color.b, playerRenderer.color.a / 2);
-        playerScript.scoreScript.startCounting = false;
+        gameManagerScript.playerScript.scoreScript.startCounting = false;
     }
 
     public void PlayGame() // Playing the game when the player pressing the play button
@@ -138,31 +124,17 @@ public class GameUI : MonoBehaviour
         scoreLabelTxt.SetActive(true);
         scoreTxt.SetActive(true);
         playerRenderer.color = new Color(playerRenderer.color.r, playerRenderer.color.g, playerRenderer.color.b, 255);
-        playerScript.scoreScript.startCounting = true;
+        gameManagerScript.playerScript.scoreScript.startCounting = true;
         Time.timeScale = 1;
     }
 
     public void GoItems()
     {
-        CheckCoinsStatus(coinsShopTxt);
+        CheckCoinsStatus(coinsItemsTxt);
         mainMenuPanel.SetActive(false);
         itemsPanel.SetActive(true);
     }
 
-    public void SelectPlayerSprite()
-    {
-        btn = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
-        purchasableItemHolderScript = EventSystem.current.currentSelectedGameObject.GetComponent<PurchasableItemHolder>();
-        for (int i = 0; i < playerSprites.Count; i++)
-        {
-            if (purchasableItemHolderScript.GetPurchasableItem().GetName().Contains(playerSprites[i].name))
-            {
-                Sprite selectedSprite = playerSprites[i];
-                playerRenderer.sprite = selectedSprite;
-            }
-        }
-    }
-    
     public void GoShop() // Changing panels when player press the shop button
     {
         CheckCoinsStatus(coinsShopTxt);
@@ -175,7 +147,6 @@ public class GameUI : MonoBehaviour
         print(EventSystem.current.currentSelectedGameObject.name);
         btn = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         purchasableItemHolderScript = EventSystem.current.currentSelectedGameObject.GetComponent<PurchasableItemHolder>();
-        FetchData();
         int itemPrice = purchasableItemHolderScript.GetPurchasableItem().GetPrice();
         if (pd.coins >= itemPrice)
         {
@@ -185,13 +156,14 @@ public class GameUI : MonoBehaviour
             string btnName = purchasableItemHolderScript.GetPurchasableItem().GetName();
             for (int i = 0; i < itemsList.Count; i++)
             {
-                string currentButtonName = itemsList[i].GetComponent<PurchasableItemHolder>().GetPurchasableItem().GetName();
+                string currentButtonName = itemsList[i].GetComponent<AcquiredItemHolder>().GetAcquiredItem().GetName();
                 if (currentButtonName.Contains(btnName))
                 {
                     Instantiate(itemsList[i], itemsAcquiredContainer.transform, false);
                 }
             }
-            playerScript.saveSystemScript.SaveData(pd);
+            gameManagerScript.playerScript.scoreScript.coins = pd.coins;
+            gameManagerScript.saveSystemScript.SaveData(pd);
             coinsShopTxt.text = pd.coins.ToString();
         }
         else

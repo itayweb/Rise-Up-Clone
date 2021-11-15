@@ -36,17 +36,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.CompareTag("CheckPlayerState"))
         {
-            playerScript.levelGeneratorScript.canGenerate = true;
+            playerScript.gameManagerScript.levelGeneratorScript.canGenerate = true;
         }
 
         if (collision.CompareTag("Props"))
         {
             isDead = true;
-            PlayerData pd = new PlayerData();
-            pd.highestScore = playerScript.scoreScript.GetHighestScore();
-            pd.coins += playerScript.scoreScript.coins + (pd.highestScore / 2);
-            playerScript.saveSystemScript.SaveData(pd);
-            playerScript.gameUIScript.RestartGame();
+            PlayerData loadedPD = playerScript.gameManagerScript.saveSystemScript.LoadData();
+            loadedPD.highestScore = playerScript.scoreScript.GetHighestScore();
+            loadedPD.coins += (playerScript.scoreScript.score / 2);
+            loadedPD.selectedSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+            loadedPD.itemsAcquired = loadedPD.itemsAcquired;
+            playerScript.gameManagerScript.saveSystemScript.SaveData(loadedPD);
+            playerScript.gameManagerScript.gameUIScript.RestartGame();
         }
     }
 }

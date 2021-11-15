@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Score : MonoBehaviour
 {
     [SerializeField] internal int score = 0;
-    [SerializeField] internal int coins = 0;
+    [SerializeField] internal int coins;
     [SerializeField] Player playerScript;
     [SerializeField] Text scoreTxt;
     [SerializeField] internal bool startCounting = false;
@@ -27,8 +27,8 @@ public class Score : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IncreasePoints();
-        CheckHighestScore();
+        IncreasePoints(); // Increasing player score while the player playing the actual game (after pressing play btn)
+        CheckHighestScore(); // Checking player score and set player's highest score whether highest score is lower than score
     }
 
     void IncreasePoints()

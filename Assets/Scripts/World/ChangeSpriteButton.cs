@@ -6,16 +6,17 @@ using UnityEngine.UI;
 
 public class ChangeSpriteButton : MonoBehaviour
 {
-    public GameObject player;
-    private GameUI gameUIScript;
+    private GameObject player;
+    private GameManager gameManagerScript;
     private AcquiredItemHolder acquiredItemHolderScript;
+    private PlayerData pd = new PlayerData();
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
         GameObject gameManager = GameObject.Find("GameManager");
-        gameUIScript = gameManager.GetComponent<GameUI>();
+        gameManagerScript = gameManager.GetComponent<GameManager>();
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(GetComponent<ChangeSpriteButton>().SelectSprite);
     }
@@ -32,8 +33,10 @@ public class ChangeSpriteButton : MonoBehaviour
         string btnName = btn.GetComponent<AcquiredItemHolder>().GetAcquiredItem().GetName();
         if (acquiredItemHolderScript.GetAcquiredItem().GetName().Contains(btnName))
         {
-            print("Entered");
             player.GetComponent<SpriteRenderer>().sprite = acquiredItemHolderScript.GetAcquiredItem().GetSprite();
+            pd = gameManagerScript.gameUIScript.pd;
+            pd.selectedSprite = player.GetComponent<SpriteRenderer>().sprite;
+            gameManagerScript.saveSystemScript.SaveData(pd);
         }
     }
 }
